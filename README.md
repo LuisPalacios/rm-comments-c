@@ -5,11 +5,14 @@ Remove all comments from a C/C++ program
 ## Compile
 
 ```zsh
-./autogen.sh
-./configure
+mkdir build
+cd build
+cmake ..
 make
 ```
 
-## Compile
+## Run 
 
-
+```zsh
+./build/rmcomments < fuente.cpp
+```

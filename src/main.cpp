@@ -1,62 +1,47 @@
-// C++ program to remove comments from a C/C++ program
 #include <iostream>
+#include <string>
 using namespace std;
 
-string removeComments(string prgm)
+string removeComments()
 {
-	int n = prgm.length();
 	string res;
-
-	// Flags to indicate that single line and multiple line comments
-	// have started or not.
 	bool s_cmt = false;
 	bool m_cmt = false;
 
-
-	// Traverse the given program
-	for (int i=0; i<n; i++)
-	{
+	char c;
+	while (cin.get(c)) {
 		// If single line comment flag is on, then check for end of it
-		if (s_cmt == true && prgm[i] == '\n')
+		if (s_cmt && c == '\n')
 			s_cmt = false;
 
 		// If multiple line comment is on, then check for end of it
-		else if (m_cmt == true && prgm[i] == '*' && prgm[i+1] == '/')
-			m_cmt = false, i++;
+		else if (m_cmt && c == '*' && cin.peek() == '/')
+			m_cmt = false, cin.get();
 
 		// If this character is in a comment, ignore it
 		else if (s_cmt || m_cmt)
 			continue;
 
 		// Check for beginning of comments and set the appropriate flags
-		else if (prgm[i] == '/' && prgm[i+1] == '/')
-			s_cmt = true, i++;
-		else if (prgm[i] == '/' && prgm[i+1] == '*')
-			m_cmt = true, i++;
+		else if (c == '/' && cin.peek() == '/')
+			s_cmt = true, cin.get();
+		else if (c == '/' && cin.peek() == '*')
+			m_cmt = true, cin.get();
 
 		// If current character is a non-comment character, append it to res
-		else res += prgm[i];
+		else
+			res += c;
 	}
 	return res;
 }
 
-// Driver program to test above functions
 int main()
 {
-	string prgm = " /* Test program */ \n"
-				" int main() \n"
-				" {		 \n"
-				"	 // variable declaration \n"
-				"	 int a, b, c; \n"
-				"	 /* This is a test \n"
-				"		 multiline	 \n"
-				"		 comment for \n"
-				"		 testing */	 \n"
-				"	 a = b + c;	 \n"
-				" }		 \n";
-	cout << "Given Program \n";
-	cout << prgm << endl;
-	cout << " Modified Program ";
-	cout << removeComments(prgm);
+	//cout << "Enter the program (Ctrl+D to end input):\n";
+
+	string prgm = removeComments();
+	//cout << "\nProgram without comments:\n";
+	cout << prgm;
+
 	return 0;
 }
